@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Button from "../ui/button/Button";
 
 interface Props {
   onGuardar?: () => void;
@@ -72,13 +73,7 @@ const FormularioContactos: React.FC<Props> = ({ onGuardar }) => {
         />
       </label>
       </div>
-      
-      <button
-        type="submit"
-        className="w-full bg-black text-white py-2 rounded font-semibold"
-      >
-        Guardar
-      </button>
+      <Button>Guardar</Button>
     </form>
   );
 };
