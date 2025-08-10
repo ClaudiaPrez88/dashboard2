@@ -26,7 +26,7 @@ export default function IngresoPage() {
 
   const textos = {
     inicio: {
-      appName: "Intum",
+      appName: "Yugen",
       titulo: undefined,
       description:
         "Estamos aquí para ayudarte a reducir los niveles de estrés y cuidar mejor de ti.",

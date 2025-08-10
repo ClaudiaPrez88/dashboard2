@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
+import { HeartPulse } from "lucide-react";
 import {
   BoxCubeIcon,
   CalenderIcon,
@@ -30,6 +31,7 @@ type NavItem = {
   subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
 
+
 const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
@@ -41,7 +43,11 @@ const navItems: NavItem[] = [
     name: "Chat",
     path: "/blank",
   },
-
+{
+    icon: <HeartPulse />,
+    name: "Autocuidado",
+    path: "/autocuidado",
+  },
   {
     icon: <UserCircleIcon />,
     name: "Tu perfil",
