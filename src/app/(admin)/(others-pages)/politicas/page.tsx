@@ -10,9 +10,9 @@ export default function Politicas() {
       <div className="min-h-screen rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
         <div className="mx-auto w-full max-w-[630px] text-center">
           <h3 className="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 sm:text-2xl">
-            Politicas
+            Políticas
           </h3>
-          <ul className="space-y-6 text-gray-800 text-left">
+          <ul className="space-y-6 text-gray-800 text-left dark:text-gray-400">
             <li>
               <strong>1. Recopilación de datos:</strong><br />
               Recopilamos solo los datos necesarios para el funcionamiento de la app, como tu nombre, correo electrónico y respuestas dentro de ejercicios o formularios emocionales. No almacenamos información sensible sin tu consentimiento explícito.

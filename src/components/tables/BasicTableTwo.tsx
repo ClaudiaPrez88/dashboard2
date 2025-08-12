@@ -6,8 +6,9 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-
-import Badge from "../ui/badge/Badge";
+import Button from "../ui/button/Button";
+import { ArrowDown } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import Image from "next/image";
 
 interface Order {
@@ -61,9 +62,9 @@ const tableData: Order[] = [
   },
 ];
 
-export default function BasicTableOne() {
+export default function BasicTableTwo() {
   return (
-    <div className="mb-4overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+    <div className="mb-4 overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
         <div className="xl:min-w-[180px] md:min-w-[120px] sm:min-w-[120px]">
           <Table>
@@ -87,7 +88,19 @@ export default function BasicTableOne() {
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Estado
+                  Precio
+                </TableCell>
+                <TableCell
+                  isHeader
+                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                 Boleta
+                </TableCell>
+                <TableCell
+                  isHeader
+                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                  Reagendar
                 </TableCell>
               </TableRow>
             </TableHeader>
@@ -120,18 +133,15 @@ export default function BasicTableOne() {
                     {order.projectName}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    <Badge
-                      size="sm"
-                      color={
-                        order.status === "Active"
-                          ? "success"
-                          : order.status === "Pending"
-                          ? "warning"
-                          : "error"
-                      }
-                    >
-                      {order.status}
-                    </Badge>
+                    <p className=" px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">$</p>
+                  </TableCell>
+                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    <Button  className="rounded bg-black px-2 py-1 text-xs text-white"><ArrowDown/>
+                    </Button>
+                  </TableCell>
+                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    <Button  className="rounded bg-gray-400 px-2 py-1 text-xs text-white"><CalendarIcon/>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

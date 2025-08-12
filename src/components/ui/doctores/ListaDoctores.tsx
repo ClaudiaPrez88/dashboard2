@@ -42,7 +42,7 @@ export default function ListaDoctores({ onSelectDoctor }: ListaDoctoresProps) {
     return doctores.filter((d) => d.profesion === filtro);
   }, [filtro, doctores]);
 
-  if (loading) return <p>Cargando doctores...</p>;
+  if (loading) return <p className=" text-gray-500 dark:text-gray-400">Cargando doctores...</p>;
   if (error) return <p className="text-red-600">Error: {error}</p>;
 
   return (

@@ -28,7 +28,7 @@ export default function UserAddressCard() {
                   País
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  United States
+                  Chile
                 </p>
               </div>
 
@@ -37,7 +37,7 @@ export default function UserAddressCard() {
                   Ciudad
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  Phoenix, Arizona, United States.
+                  Santiago de Chile
                 </p>
               </div>
 
@@ -46,7 +46,7 @@ export default function UserAddressCard() {
                   Código postal
                 </p>
                 <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                  ERT 2489
+                  902489
                 </p>
               </div>
 
@@ -81,7 +81,7 @@ export default function UserAddressCard() {
         <div className="relative w-full p-4 overflow-y-auto bg-white no-scrollbar rounded-3xl dark:bg-gray-900 lg:p-11">
           <div className="px-2 pr-14">
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-              Edit dirección
+              Editar dirección
             </h4>
             <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
               Actualiza tus datos para mantener tu perfil actualizado.
@@ -89,20 +89,20 @@ export default function UserAddressCard() {
           </div>
           <form className="flex flex-col">
             <div className="px-2 overflow-y-auto custom-scrollbar">
-              <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+              <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-3">
                 <div>
                   <Label>País</Label>
-                  <Input type="text" defaultValue="United States" />
+                  <Input type="text" defaultValue="Chile" />
                 </div>
 
                 <div>
                   <Label>Ciudad</Label>
-                  <Input type="text" defaultValue="Arizona, United States." />
+                  <Input type="text" defaultValue="Santiago de Chile" />
                 </div>
 
                 <div>
                   <Label>Código postal</Label>
-                  <Input type="text" defaultValue="ERT 2489" />
+                  <Input type="text" defaultValue="902489" />
                 </div>
 
               </div>

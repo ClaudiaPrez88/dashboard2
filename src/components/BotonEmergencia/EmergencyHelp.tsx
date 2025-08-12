@@ -17,7 +17,7 @@ const EmergencyHelp = () => {
 
       {/* Red de apoyo */}
       <h3 className="mb-2 text-base font-medium text-gray-800 dark:text-white/90">Red de apoyo</h3>
-      <ul className="mb-4 space-y-2">
+      <ul className="mb-4 space-y-2 text-gray-800 dark:text-white/90">
         <li className="rounded-md border p-2 item-lista">
           <span className="lista-user">
             <div className="icon-list">
@@ -30,7 +30,7 @@ const EmergencyHelp = () => {
 
       {/* Líneas de emergencia */}
       <h3 className="mb-2 text-base font-medium text-gray-800 dark:text-white/90">Líneas de emergencia</h3>
-      <ul className="mb-4 space-y-2">
+      <ul className="mb-4 space-y-2 text-gray-800 dark:text-white/90">
         <li className="rounded-md border p-2 item-lista">
          <span className="lista-user"><div className="icon-list"><Building className="text-brand-600"/></div>Fono Salud</span> 
          <Phone/>
@@ -43,7 +43,7 @@ const EmergencyHelp = () => {
 
       {/* Ejercicios */}
       <h3 className="mb-2 text-base font-medium text-gray-800 dark:text-white/90">Ejercicios S.O.S. para tu ansiedad</h3>
-      <ul className="space-y-2">
+      <ul className="space-y-2 text-gray-800 dark:text-white/90">
         <li className="rounded-md border p-2 list-no"><span>Respiración en caso de crisis</span><ArrowRight/></li>
         <li className="rounded-md border p-2 list-no"><span>Conexión al presente</span><ArrowRight/></li>
       </ul>

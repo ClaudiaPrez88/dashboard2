@@ -8,7 +8,7 @@ export default function Terminos() {
         <div>
       <PageBreadcrumb pageTitle="Términos y condiciones" />
       <div className="min-h-screen rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
-        <div className="mx-auto w-full max-w-[630px] text-center">
+        <div className="mx-auto w-full max-w-[630px] text-center dark:text-gray-400">
           <h3 className="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 sm:text-2xl">
            Términos y Condiciones de Uso
           </h3>
@@ -16,7 +16,7 @@ export default function Terminos() {
           <p className="text-sm text-left text-gray-500 dark:text-gray-400 sm:text-base py-2">
             Bienvenido/a a Yungen, una aplicación diseñada para apoyar a personas que buscan herramientas que las ayuden a sobrellevar su ansiedad con la ayuda de herramientas digitales y contenidos psicoeducativos. Al acceder y utilizar esta App, aceptas los siguientes Términos y Condiciones. Te pedimos que los leas atentamente antes de utilizar nuestros servicios.
           </p>
-          <ul className="list-disc pl-6 space-y-4 py-2 text-gray-800 text-left">
+          <ul className="list-disc pl-6 space-y-4 py-2 text-gray-800 dark:text-gray-400 text-left">
             <li>
                 <strong>Aceptación de los Términos:</strong> El uso de esta App implica la aceptación plena y sin reservas de estos Términos y Condiciones. Si no estás de acuerdo con alguno de ellos, por favor no utilices la App.
             </li>

@@ -12,7 +12,7 @@ export default function FAQ() {
           <h3 className="mb-4 font-semibold text-gray-800 text-theme-xl dark:text-white/90 sm:text-2xl">
             FQA
           </h3>
-          <ul className="space-y-6 text-gray-800 text-left">
+          <ul className="space-y-6 text-gray-800 dark:text-gray-400 text-left">
           <li>
             <strong>¿Esta app reemplaza la atención psicológica profesional?</strong><br />
             No. Nuestra app es un complemento de apoyo emocional y bienestar. No reemplaza el diagnóstico ni el tratamiento realizado por un profesional de la salud mental.
