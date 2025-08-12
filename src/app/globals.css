@@ -750,3 +750,15 @@ span.flatpickr-weekday,
 .area-chat{
    height: calc(100vh - 300px);
 }
+.item-lista {
+  @apply rounded-md border p-2 flex justify-between items-center;
+}
+.lista-user {
+  @apply flex justify-start items-center;
+}
+.list-no{
+  @apply p-4 flex justify-between items-center;
+}
+.icon-list{
+  @apply flex items-center justify-center w-10 h-10 bg-brand-100 rounded-xl dark:bg-gray-800 mr-2
+}
