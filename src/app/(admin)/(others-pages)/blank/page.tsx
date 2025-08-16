@@ -6,21 +6,22 @@ import Button from "@/components/ui/button/Button";
 type Message = {
   author: "user" | "bot";
   text: string;
+  urgent?:boolean;
 };
 
 export default function BlankPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       author: "bot",
-      text: `Hola, soy Yungen. Bienvenido a tu chequeo de salud mental.
+text: `Hola, soy Yūgen 🌿  
+Bienvenido a tu espacio de calma y reflexión.  
 
-Puedes usar estos momentos para trabajar cualquier desafío y no dejar que las emociones negativas se acumulen 🌧️.
+Aquí puedes expresar lo que sientes, liberar el peso de las emociones difíciles 🌧️ y celebrar los momentos que iluminan tu día ☀️.  
 
-También puedes registrar momentos positivos, y te sugeriré formas de mejorar aún más tu salud mental ☀️.
+Mi objetivo es acompañarte en tu viaje hacia un bienestar más profundo, con pequeñas sugerencias que nutran tu mente y tu corazón.  
 
-¿Cómo te sientes hoy?
-
-¿Cómo puedo ayudarte?`,
+¿Cómo te sientes hoy?  
+¿Qué puedo hacer por ti en este momento?`,
     },
   ]);
   const [input, setInput] = useState("");
@@ -38,7 +39,16 @@ Recuerda: si detectas palabras graves como "suicidio", "hacerme daño" o similar
   const handleSend = async () => {
     if (!input.trim() || loading) return;
 
-    setMessages((prev) => [...prev, { author: "user", text: input }]);
+     // Detectar palabras clave críticas
+    const criticalWords = ["suicidio", "hacerme daño", "quitarme la vida"];
+    const isUrgent = criticalWords.some((word) =>
+      input.toLowerCase().includes(word)
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { author: "user", text: input, urgent: isUrgent },
+    ]);
     setInput("");
     setLoading(true);
 
@@ -53,13 +63,29 @@ Recuerda: si detectas palabras graves como "suicidio", "hacerme daño" o similar
 
       const data = await res.json();
 
-      setMessages((prev) => [...prev, { author: "bot", text: data.response }]);
-    } catch {
-      setMessages((prev) => [...prev, { author: "bot", text: "Error al obtener respuesta." }]);
-    } finally {
-      setLoading(false);
-    }
-  };
+      // Si es urgente, añadimos un mensaje con botón
+      if (isUrgent) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            author: "bot",
+            text: `${data.response}\n\n⚠️ Te recomiendo encarecidamente que hables con un profesional lo antes posible.`,
+            urgent: true,
+          },
+        ]);
+          } else {
+            setMessages((prev) => [...prev, { author: "bot", text: data.response }]);
+          }
+        } catch {
+          setMessages((prev) => [
+            ...prev,
+            { author: "bot", text: "Error al obtener respuesta." },
+          ]);
+        } finally {
+          setLoading(false);
+        }
+      };
+
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -83,6 +109,18 @@ Recuerda: si detectas palabras graves como "suicidio", "hacerme daño" o similar
                 {msg.author === "user" ? "Tú" : "Yungen"}
               </div>
               {msg.text}
+               {/* Si el mensaje es urgente y del bot, mostramos botón */}
+              {msg.urgent && msg.author === "bot" && (
+                <div className="mt-3">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => (window.location.href = "/doctores")}
+                  >
+                    Reservar cita médica 🩺
+                  </Button>
+                </div>
+              )}
             </div>
           ))}
           <div ref={bottomRef} />

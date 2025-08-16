@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import React from "react";
-import RecentOrders from "@/components/ecommerce/RecentOrders";
 import CustomCard from "@/components/ecommerce/CustomCard";
 import CustomCard2 from "@/components/ecommerce/CustomCard2";
 import { CalendarClock } from "lucide-react";
 import { CalendarPlus } from "lucide-react";
 import CustomCardEjercicios from "@/components/ecommerce/CustomCardEjercicios";
+import BreathingExercise from "../../components/Breathing/BreathingExercise"
 
 
 export const metadata: Metadata = {
@@ -29,6 +29,9 @@ export default function Ecommerce() {
       <div className="col-span-12 xl:col-span-12">
         <CustomCardEjercicios url="autocuidado"/>
       </div>
+      {/* <div className="col-span-12 xl:col-span-12">
+        <BreathingExercise/>
+      </div> */}
     </div>
   );
 }

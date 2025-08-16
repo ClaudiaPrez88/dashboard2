@@ -25,6 +25,7 @@
     "autoprefixer": "^10.4.20",
     "axios": "^1.11.0",
     "flatpickr": "^4.6.13",
+    "framer-motion": "^12.23.12",
     "lucide-react": "^0.535.0",
     "next": "15.2.3",
     "react": "^19.0.0",
