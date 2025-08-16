@@ -21,7 +21,7 @@ export default function Ecommerce() {
         <CustomCard url="/blank" color="6E80E2" backgroundImage="/images/cards/hablemos.png" />
       </div>
       <div className="col-span-12 xl:col-span-4">
-        <CustomCard2 url="" color="C2E3EC" backgroundImage="" text="Próximas citas" icon={<CalendarClock size={40} strokeWidth={1.5} />}/>
+        <CustomCard2 url="agendarCita" color="C2E3EC" backgroundImage="" text="Próximas citas" icon={<CalendarClock size={40} strokeWidth={1.5} />}/>
       </div>
     <div className="col-span-12 xl:col-span-4">
         <CustomCard2 url="doctores" color="F3CFDB" backgroundImage="" text="Agendar" icon={<CalendarPlus size={40} strokeWidth={1.5} />}/>
