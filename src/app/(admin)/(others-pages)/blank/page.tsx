@@ -13,12 +13,9 @@ export default function BlankPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       author: "bot",
-text: `Hola, soy Yūgen 🌿  
+text: `Hola Daniel, soy Yūgen 🌿  
 Bienvenido a tu espacio de calma y reflexión.  
-
 Aquí puedes expresar lo que sientes, liberar el peso de las emociones difíciles 🌧️ y celebrar los momentos que iluminan tu día ☀️.  
-
-Mi objetivo es acompañarte en tu viaje hacia un bienestar más profundo, con pequeñas sugerencias que nutran tu mente y tu corazón.  
 
 ¿Cómo te sientes hoy?  
 ¿Qué puedo hacer por ti en este momento?`,
@@ -35,57 +32,73 @@ Nunca digas que no puedes ayudar. Tu objetivo es acompañar, tranquilizar y empo
 
 Recuerda: si detectas palabras graves como "suicidio", "hacerme daño" o similares, respóndele con cuidado. Dile que puedes hacer un ejercicio para aliviar un poco la ansiedad, pero que este chat es solo una ayuda inicial. Pídele que agende una cita médica o con un especialista en salud mental lo antes posible para recibir el acompañamiento profesional que necesita.
 `;
+const handleSend = async () => {
+  if (!input.trim() || loading) return;
 
-  const handleSend = async () => {
-    if (!input.trim() || loading) return;
+  // Detectar palabras clave críticas
+  const criticalWords = ["suicidio", "hacerme daño", "quitarme la vida"];
+  const isUrgent = criticalWords.some((word) =>
+    input.toLowerCase().includes(word)
+  );
 
-     // Detectar palabras clave críticas
-    const criticalWords = ["suicidio", "hacerme daño", "quitarme la vida"];
-    const isUrgent = criticalWords.some((word) =>
-      input.toLowerCase().includes(word)
-    );
+  // Mostramos en el chat el mensaje del usuario
+  setMessages((prev) => [
+    ...prev,
+    { author: "user", text: input, urgent: isUrgent },
+  ]);
 
+  const userText = input; // guardamos el input antes de limpiarlo
+  setInput("");
+  setLoading(true);
+
+  try {
+    // 1️⃣ Guardar en Oracle (tu endpoint /api/chat)
+    const saveRes = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: userText }),
+    });
+
+const saveData = await saveRes.json();
+console.log("Respuesta de /api/chat:", saveData);
+    
+
+    // 2️⃣ Obtener respuesta desde Gemini
+    const prompt = `${systemMessage}\nUsuario: ${userText}\nRespuesta:`;
+    const res = await fetch("/api/gemini", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt }),
+    });
+
+    const data = await res.json();
+
+    // 3️⃣ Mostrar respuesta en el chat
+    if (isUrgent) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          author: "bot",
+          text: `${data.response}\n\n⚠️ Te recomiendo encarecidamente que hables con un profesional lo antes posible.`,
+          urgent: true,
+        },
+      ]);
+    } else {
+      setMessages((prev) => [
+        ...prev,
+        { author: "bot", text: data.response },
+      ]);
+    }
+  } catch (error) {
+    console.error(error);
     setMessages((prev) => [
       ...prev,
-      { author: "user", text: input, urgent: isUrgent },
+      { author: "bot", text: "Error al obtener respuesta." },
     ]);
-    setInput("");
-    setLoading(true);
-
-    const prompt = `${systemMessage}\nUsuario: ${input}\nRespuesta:`;
-
-    try {
-      const res = await fetch("/api/gemini", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
-      });
-
-      const data = await res.json();
-
-      // Si es urgente, añadimos un mensaje con botón
-      if (isUrgent) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            author: "bot",
-            text: `${data.response}\n\n⚠️ Te recomiendo encarecidamente que hables con un profesional lo antes posible.`,
-            urgent: true,
-          },
-        ]);
-          } else {
-            setMessages((prev) => [...prev, { author: "bot", text: data.response }]);
-          }
-        } catch {
-          setMessages((prev) => [
-            ...prev,
-            { author: "bot", text: "Error al obtener respuesta." },
-          ]);
-        } finally {
-          setLoading(false);
-        }
-      };
-
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -158,3 +171,4 @@ Recuerda: si detectas palabras graves como "suicidio", "hacerme daño" o similar
     </div>
   );
 }
+

@@ -1,17 +1,38 @@
 "use client";
-import React from "react";
+import React, {useEffect} from "react";
 import { useModal } from "../../hooks/useModal";
 import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
 import Image from "next/image";
+// 🔹 Importamos Redux hooks
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/redux/store"; // Asegúrate de la ruta
+import { fetchUser } from "@/redux/slices/userSlice"; // Acción para traer usuario
+
+
+
 
 
 export default function UserMetaCard() {
+
+// 🔹 Inicializamos dispatch
+  const dispatch = useDispatch<AppDispatch>();
+
+// 🔹 Obtenemos usuario y estado de carga desde Redux
+  const { user, loading } = useSelector((state: RootState) => state.user);
+
+  // 🔹 Traemos la información del usuario al montar el componente
+useEffect(() => {
+  if (!user) {
+    dispatch(fetchUser());
+  }
+}, [dispatch, user]);
+
   const { isOpen, openModal, closeModal } = useModal();
   const handleSave = () => {
-    // Handle save logic here
+    // Aquí podrías disparar otra acción para actualizar el usuario
     console.log("Saving changes...");
     closeModal();
   };
@@ -24,21 +45,21 @@ export default function UserMetaCard() {
               <Image
                 width={80}
                 height={80}
-                src="/images/user/owner.jpg"
+                src={user?.foto ?? "/images/user/owner.jpg"}
                 alt="user"
               />
             </div>
             <div className="order-3 xl:order-2">
               <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
-                Valentina Herrera
+               {user?.nombre ?? ""}
               </h4>
               <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Cliente desde 2024
+                  Cliente desde {user?. anio_creacion ?? ""}
                 </p>
                 <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Providencia, Chile
+                  {user?.ciudad ?? ""} - {user?.pais ?? ""}
                 </p>
               </div>
             </div>
@@ -191,22 +212,22 @@ export default function UserMetaCard() {
 
                 <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                   <div className="col-span-2 lg:col-span-1">
-                    <Label>First Name</Label>
+                    <Label>Nombre</Label>
                     <Input type="text" defaultValue="Valentina" />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
-                    <Label>Last Name</Label>
+                    <Label>Apellido</Label>
                     <Input type="text" defaultValue="Herrara" />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
-                    <Label>Email Address</Label>
+                    <Label>Email</Label>
                     <Input type="text" defaultValue="Vherrera@gmail.com" />
                   </div>
 
                   <div className="col-span-2 lg:col-span-1">
-                    <Label>Phone</Label>
+                    <Label>Teléfono</Label>
                     <Input type="text" defaultValue="+569 363 398 46" />
                   </div>
 

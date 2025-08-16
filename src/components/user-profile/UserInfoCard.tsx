@@ -1,12 +1,31 @@
 "use client";
-import React from "react";
+import React  from "react";
 import { useModal } from "../../hooks/useModal";
 import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import Input from "../form/input/InputField";
 import Label from "../form/Label";
+import { useEffect } from "react";
+// 🔹 Importamos Redux hooks
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/redux/store"; // Asegúrate de la ruta
+import { fetchUser } from "@/redux/slices/userSlice"; // Acción para traer usuario
+
 
 export default function UserInfoCard() {
+  // ✅ Hook de Redux para despachar acciones
+  const dispatch = useDispatch<AppDispatch>();
+
+  // ✅ Seleccionar datos del usuario y estado de carga del store
+  const { user, loading } = useSelector((state: RootState) => state.user);
+
+  // ✅ useEffect para traer usuario al montar el componente
+  useEffect(() => {
+    if (!user) {
+      dispatch(fetchUser()); // Llama a la acción asíncrona que obtiene el usuario
+    }
+  }, [dispatch, user]);
+
   const { isOpen, openModal, closeModal } = useModal();
   const handleSave = () => {
     // Handle save logic here
@@ -27,7 +46,7 @@ export default function UserInfoCard() {
                Nombre
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Valentina
+               {user?.nombre ?? ""}
               </p>
             </div>
 
@@ -36,7 +55,7 @@ export default function UserInfoCard() {
                Apellido
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Herrera
+               {user?.apellido ?? ""}
               </p>
             </div>
 
@@ -45,7 +64,7 @@ export default function UserInfoCard() {
                 Email 
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                Vherrera@gmail.com
+                {user?.correo ?? ""}
               </p>
             </div>
 
@@ -54,10 +73,10 @@ export default function UserInfoCard() {
                Teléfono
               </p>
               <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                +569 363 398 46
+                 {user?.telefono ?? ""}
               </p>
             </div>
-          </div>
+           </div>
         </div>
 
         <button

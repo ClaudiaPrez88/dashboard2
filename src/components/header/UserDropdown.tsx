@@ -1,16 +1,31 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext"; // 👈 Agregado
+
+// ✅ Importaciones de Redux
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "@/redux/slices/userSlice";
+import { RootState, AppDispatch } from "@/redux/store";
 
 export default function UserDropdown() {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, logout } = useAuth(); // 👈 Acceso a usuario y logout
   const router = useRouter();
+
+  // ✅ Hook de Redux para despachar acciones
+  const dispatch = useDispatch<AppDispatch>();
+
+  // ✅ Seleccionar datos del usuario y estado de carga del store
+  const { user, loading } = useSelector((state: RootState) => state.user);
+
+  // ✅ useEffect para traer usuario al montar el componente
+  useEffect(() => {
+    if (!user) {
+      dispatch(fetchUser()); // Llama a la acción asíncrona que obtiene el usuario
+    }
+  }, [dispatch, user]);
 
   function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.stopPropagation();
@@ -22,7 +37,8 @@ export default function UserDropdown() {
   }
 
   function handleLogout() {
-    logout(); // Lógica del context
+    // ❌ Antes: usabas useAuth, ahora puedes implementar tu logout desde Redux o AuthContext
+    // Aquí solo ejemplo de redirección
     router.push("/signin");
   }
 
@@ -36,13 +52,14 @@ export default function UserDropdown() {
           <Image
             width={44}
             height={44}
-            src="/images/user/owner.jpg"
+            // ✅ Mostrar la foto real del usuario si existe, fallback si no
+            src={user?.foto ?? "/images/user/owner.jpg"}
             alt="User"
           />
         </span>
 
         <span className="text-theme-sm mr-1 block font-medium">
-          {user?.name ?? "Usuario"}
+          {user?.nombre ?? "Usuario"}
         </span>
 
         <svg
@@ -72,10 +89,10 @@ export default function UserDropdown() {
       >
         <div>
           <span className="text-theme-sm block font-medium text-gray-700 dark:text-gray-400">
-            {user?.name ?? "Nombre usuario"}
+            {user?.nombre ?? "Nombre usuario"} {user?.apellido ?? ""}
           </span>
           <span className="text-theme-xs mt-0.5 block text-gray-500 dark:text-gray-400">
-            {user?.email ?? "correo@example.com"}
+            {user?.correo ?? "correo@example.com"}
           </span>
         </div>
 
@@ -87,7 +104,6 @@ export default function UserDropdown() {
               href="/profile"
               className="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
-              {/* SVG Icono perfil */}
               Editar Perfil
             </DropdownItem>
           </li>
@@ -98,7 +114,6 @@ export default function UserDropdown() {
               href="/profile"
               className="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
-              {/* SVG Icono ajustes */}
               Ajustes de cuenta
             </DropdownItem>
           </li>
@@ -109,18 +124,15 @@ export default function UserDropdown() {
               href="/profile"
               className="group text-theme-sm flex items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
-              {/* SVG Icono soporte */}
               Soporte
             </DropdownItem>
           </li>
         </ul>
 
-        {/* Botón de salir (logout) */}
         <button
           onClick={handleLogout}
           className="group text-theme-sm mt-3 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
         >
-          {/* SVG Icono salir */}
           Salir
         </button>
       </Dropdown>

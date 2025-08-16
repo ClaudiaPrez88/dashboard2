@@ -60,10 +60,10 @@ export default function SignUpForm() {
         <div>
           <div className="mb-5 sm:mb-8">
             <h1 className="text-title-sm sm:text-title-md mb-2 font-semibold text-gray-800 dark:text-white/90">
-              Incribirse
+              Resgístrate
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              ¡Introduce tu email y contraseña para registrarte!
+              Introduce tu email y contraseña para registrarte
             </p>
           </div>
 
@@ -84,7 +84,7 @@ export default function SignUpForm() {
                       type="text"
                       id="fname"
                       name="fname"
-                      placeholder="Enter your first name"
+                      placeholder="Ingresa tu nombre"
                       value={formData.fname}
                       onChange={(e) =>
                         setFormData({ ...formData, fname: e.target.value })
@@ -99,7 +99,7 @@ export default function SignUpForm() {
                       type="text"
                       id="lname"
                       name="lname"
-                      placeholder="Enter your last name"
+                      placeholder="Ingresa tu apellido"
                       value={formData.lname}
                       onChange={(e) =>
                         setFormData({ ...formData, lname: e.target.value })
@@ -115,7 +115,7 @@ export default function SignUpForm() {
                     type="email"
                     id="email"
                     name="email"
-                    placeholder="Enter your email"
+                    placeholder="Ingresa tu email"
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
@@ -128,7 +128,7 @@ export default function SignUpForm() {
                   </Label>
                   <div className="relative">
                     <Input
-                      placeholder="Enter your password"
+                      placeholder="Ingresa tu contraseña"
                       type={showPassword ? "text" : "password"}
                       value={formData.password}
                       onChange={(e) =>
@@ -181,12 +181,12 @@ export default function SignUpForm() {
 
             <div className="mt-5">
               <p className="text-center text-sm font-normal text-gray-700 sm:text-start dark:text-gray-400">
-                ¿Ya tienes una cuenta?
+                ¿Ya tienes una cuenta? 
                 <Link
                   href="/signin"
                   className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
-                 Ingresar
+                  Ingresa
                 </Link>
               </p>
             </div>
