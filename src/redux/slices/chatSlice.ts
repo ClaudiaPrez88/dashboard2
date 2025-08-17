@@ -33,7 +33,7 @@ export const deleteMessage = createAsyncThunk(
   }
 );
 
-// Async thunk para traer mensajes
+// Async thunk para traer mensajes del usuario para la lista
 export const fetchMessages = createAsyncThunk(
   "chat/fetchMessages",
   async () => {
@@ -52,6 +52,21 @@ export const fetchMessages = createAsyncThunk(
       id: msg.id,
       text: msg.text,
     }));
+  }
+);
+
+// Nuevo thunk para traer los mensajes del user y bot
+export const fetchMessagesByChat = createAsyncThunk(
+  "chat/fetchMessagesByChat",
+  async (session_id: string, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`/api/chat?session_id=${session_id}`);
+      if (!res.ok) throw new Error("Error al traer mensajes del chat");
+      const data = await res.json();
+      return data.items; // asumimos que vienen todos los mensajes del chat
+    } catch (err: any) {
+      return rejectWithValue(err.message);
+    }
   }
 );
 

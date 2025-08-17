@@ -112,6 +112,31 @@ const {
   closeModal: closeAside,
 } = useModal();
 
+const handleSelectChat = async (session_id: string) => {
+  try {
+    const res = await fetch(`/api/chat?session_id=${session_id}`);
+    const data = await res.json();
+
+    // Filtramos solo los mensajes del día de hoy
+    const today = new Date();
+    const todayMessages = data.items.filter((msg: any) => {
+      const date = new Date(msg.created_at);
+      return date.toDateString() === today.toDateString();
+    });
+
+    // Mapeamos al formato de Message
+    setMessages(todayMessages.map((msg: any) => ({
+      author: msg.role === "user" ? "user" : "bot",
+      text: msg.text,
+      urgent: msg.urgent === "Y"
+    })));
+
+  } catch (error) {
+    console.error("Error al cargar los mensajes del chat:", error);
+  }
+};
+
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
@@ -171,7 +196,7 @@ const {
          
                {/* Aside en desktop */}
                 <div className="hidden lg:block col-span-3">
-                  <ChatAside />
+                  <ChatAside onSelectChat={handleSelectChat} />
                 </div>
 
                
@@ -183,7 +208,7 @@ const {
                   showCloseButton={true}
                 >
                   <div className="fixed top-0 left-0 flex flex-col w-full h-screen bg-white dark:bg-gray-900 p-4">
-                    <ChatAside/>
+                    <ChatAside onSelectChat={handleSelectChat}/>
                   </div>
                 </Modal>
           </div>

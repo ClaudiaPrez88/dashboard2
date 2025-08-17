@@ -1,34 +1,34 @@
 "use client";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
-import { fetchMessages } from "../redux/slices/chatSlice";
+import { fetchMessages, deleteMessage } from "../redux/slices/chatSlice";
 import { MoreDotIcon } from "@/icons";
 import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
 import { Dropdown } from "@/components/ui/dropdown/Dropdown";
-import { deleteMessage } from "../redux/slices/chatSlice";
 
 type ChatItem = {
   id: number;
   text: string;
+   session_id?: string;
 };
 
+type ChatAsideProps = {
+  onSelectChat: (session_id: string) => void;
+};
 
-const ChatAside: React.FC = () => {
-   const dispatch = useDispatch<AppDispatch>();
+const ChatAside: React.FC<ChatAsideProps> = ({ onSelectChat }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { items, loading } = useSelector((state: RootState) => state.chat) as {
-  items: ChatItem[];
-  loading: boolean;
-};
+    items: ChatItem[];
+    loading: boolean;
+  };
+
+  const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
 
   useEffect(() => {
-  dispatch(fetchMessages());
-}, [dispatch]);
-
- const [isOpen, setIsOpen] = useState(false);
-
- //Guardo el id del dropdown abierto
-  const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
+    dispatch(fetchMessages());
+  }, [dispatch]);
 
   function toggleDropdown(id: number) {
     setOpenDropdownId(openDropdownId === id ? null : id);
@@ -61,11 +61,11 @@ const ChatAside: React.FC = () => {
       </button>
 
       {/* Lista de chats */}
-            <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3 text-sm">
+      <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3 text-sm">
         {loading ? (
           <p>Cargando...</p>
         ) : (
-           <ul className="space-y-1">
+          <ul className="space-y-1">
             {items.map((item) => (
               <li
                 key={item.id}
@@ -87,7 +87,10 @@ const ChatAside: React.FC = () => {
                     className="w-40 p-2"
                   >
                     <DropdownItem
-                      onItemClick={closeDropdown}
+                      onItemClick={() => {
+                        onSelectChat(item.session_id); // 👈 al hacer click en "Ver"
+                        closeDropdown();
+                      }}
                       className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
                     >
                       Ver
@@ -108,7 +111,6 @@ const ChatAside: React.FC = () => {
           </ul>
         )}
       </div>
-
     </aside>
   );
 };
