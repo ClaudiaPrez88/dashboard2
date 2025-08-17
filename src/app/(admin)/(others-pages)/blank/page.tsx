@@ -170,7 +170,7 @@ const {
 
          
                {/* Aside en desktop */}
-                <div className="lg:block col-span-3">
+                <div className="hidden lg:block col-span-3">
                   <ChatAside />
                 </div>
 
@@ -182,8 +182,8 @@ const {
                   isFullscreen={true} // para que en móvil sea toda la pantalla
                   showCloseButton={true}
                 >
-                  <div className="fixed top-0 left-0 flex flex-col w-full h-screen bg-white dark:bg-gray-900">
-                    <ChatAside onClose={closeAside} />
+                  <div className="fixed top-0 left-0 flex flex-col w-full h-screen bg-white dark:bg-gray-900 p-4">
+                    <ChatAside/>
                   </div>
                 </Modal>
           </div>

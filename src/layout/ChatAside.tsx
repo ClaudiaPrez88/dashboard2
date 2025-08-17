@@ -22,7 +22,7 @@ const ChatAside: React.FC = () => {
 }, [dispatch]);
 
   return (
-    <aside className="hidden lg:flex lg:relative lg:top-auto lg:right-auto lg:h-full lg:w-[280px] lg:flex-col lg:border-l lg:border-gray-200 lg:bg-white lg:p-6 dark:lg:border-gray-800 dark:lg:bg-gray-900">
+    <aside className="lg:relative lg:top-auto lg:right-auto lg:h-full lg:w-[280px] lg:flex-col lg:border-l lg:border-gray-200 lg:bg-white lg:p-6 dark:lg:border-gray-800 dark:lg:bg-gray-900">
       {/* Botón para crear un nuevo chat */}
       <button className="mb-5 flex w-full items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-3 text-sm font-medium text-white transition hover:bg-brand-600">
         <svg
