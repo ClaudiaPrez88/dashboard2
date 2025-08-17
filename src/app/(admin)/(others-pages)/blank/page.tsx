@@ -104,7 +104,10 @@ const handleSend = async () => {
     setLoading(false);
   }
 };
-
+const [showAside, setShowAside] = useState(true);
+const toggleAside = () => {
+    setShowAside((prev) => !prev);
+  };
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -112,10 +115,34 @@ const handleSend = async () => {
 
   return (
     <div className="chat">
-      <PageBreadcrumb pageTitle="Chat" />
+      <PageBreadcrumb pageTitle="Chat - Hablemos" />
       <div>
           <div className="grid grid-cols-12 gap-4">
-          
+                {/* Aside en desktop */}
+                {showAside && (
+                  <div className="lg:block col-span-3">
+                    <ChatAside onClose={() => setShowAside(false)} />
+                  </div>
+                )}
+
+                {/* Botón para abrir aside en mobile */}
+                {!showAside && (
+                  <div className="lg:hidden col-span-12">
+                  <div className="my-6 flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900">
+                    <h4 className="pl-2 text-lg font-medium text-gray-800 dark:text-white/90">Historial</h4>
+                    <button 
+                     onClick={toggleAside} 
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-gray-300 text-gray-700 dark:border-gray-700 dark:text-gray-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M4 6L20 6M4 18L20 18M4 12L20 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                )}
+
+                
+              {/* Chat */}
               <div className="col-span-12 lg:col-span-9">
                 <div className="rounded p-4 overflow-y-auto mb-4 text-left area-chat max-h-[70vh]">
                 {messages.map((msg, i) => (
@@ -149,10 +176,10 @@ const handleSend = async () => {
                 </div>
               </div>
 
-         
-              <div className="col-span-12 lg:col-span-3">
-                 <ChatAside/>
-              </div>
+         <div className="hidden lg:flex col-span-3">
+            <ChatAside />
+          </div>
+             
           </div>
 
 

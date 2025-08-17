@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext"; // 👈 importa el AuthProvider
 import ReduxProvider from "@/redux/ReduxProvider";
 
+
 const outfit = Outfit({
   subsets: ["latin"],
 });

@@ -11,7 +11,7 @@ const EmergencyHelp = () => {
     <div className="min-h-screen rounded-2xl border border-gray-200 bg-white  dark:border-gray-800 dark:bg-white/[0.03] ">
       <div className="mx-auto w-full px-5 py-7 xl:px-10 xl:py-12">
       <p className="mb-4 mt-1 font-normal text-gray-500 text-theme-sm dark:text-gray-400">
-        Si estás lidiando con una situación en la que te sientes sobrepasada, es importante que hables con una persona sobre lo que estás
+        Si estás lidiando con una situación en la que te sientes sobrepasado, es importante que hables con una persona sobre lo que estás
         sintiendo.
       </p>
 
