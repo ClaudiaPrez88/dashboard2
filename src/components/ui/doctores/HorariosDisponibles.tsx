@@ -42,7 +42,7 @@ export default function HorariosDisponibles({ rango, onSeleccionar }: HorariosDi
           const horas = horariosSimulados[dia] || [];
           return (
             <div key={dia} className="flex flex-col items-center">
-              <p className="text-sm font-medium">{dia}</p>
+              <p className="text-sm font-medium text-gray-800 dark:text-white">{dia}</p>
               {horas.map((hora) => (
                 <button
                   key={hora}

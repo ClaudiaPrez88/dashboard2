@@ -44,7 +44,7 @@ export default function Terminos() {
                 <strong>Propiedad Intelectual:</strong> Todos los contenidos, diseño, marcas, logotipos, textos, imágenes y códigos fuente son propiedad de [Nombre del equipo o empresa] o de sus respectivos autores, y están protegidos por derechos de autor.
             </li>
             <li>
-                <strong>Contacto:</strong> Si tienes preguntas sobre estos Términos y Condiciones, puedes contactarnos a través del correo <p className="underline text-blue-600">correo@email.com</p> o directamente desde la sección de contacto en la App.
+                <strong>Contacto:</strong> Si tienes preguntas sobre estos Términos y Condiciones, puedes contactarnos a través del correo <p className="underline text-blue-600">contacto@yugen.com</p> o directamente desde la sección de contacto en la App.
             </li>
             </ul>
 

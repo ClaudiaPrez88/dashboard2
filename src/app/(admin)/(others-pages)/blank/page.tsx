@@ -2,6 +2,7 @@
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import React, { useState, useRef, useEffect } from "react";
 import Button from "@/components/ui/button/Button";
+import ChatAside from "@/layout/ChatAside";
 
 type Message = {
   author: "user" | "bot";
@@ -13,7 +14,7 @@ export default function BlankPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       author: "bot",
-text: `Hola Daniel, soy Yūgen 🌿  
+text: `Hola Manuel, soy Yūgen 🌿  
 Bienvenido a tu espacio de calma y reflexión.  
 Aquí puedes expresar lo que sientes, liberar el peso de las emociones difíciles 🌧️ y celebrar los momentos que iluminan tu día ☀️.  
 
@@ -35,33 +36,33 @@ Recuerda: si detectas palabras graves como "suicidio", "hacerme daño" o similar
 const handleSend = async () => {
   if (!input.trim() || loading) return;
 
-  // Detectar palabras clave críticas
   const criticalWords = ["suicidio", "hacerme daño", "quitarme la vida"];
   const isUrgent = criticalWords.some((word) =>
     input.toLowerCase().includes(word)
   );
 
-  // Mostramos en el chat el mensaje del usuario
+  const userText = input;
   setMessages((prev) => [
     ...prev,
-    { author: "user", text: input, urgent: isUrgent },
+    { author: "user", text: userText, urgent: isUrgent },
   ]);
-
-  const userText = input; // guardamos el input antes de limpiarlo
   setInput("");
   setLoading(true);
 
   try {
-    // 1️⃣ Guardar en Oracle (tu endpoint /api/chat)
-    const saveRes = await fetch("/api/chat", {
+    // 1️⃣ Guardar en Oracle (a través de tu /api/chat)
+    await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: userText }),
+      body: JSON.stringify({
+        session_id: "chat-001", // podrías generar uno dinámico
+        user_id: "u001",        // el usuario logueado
+        role: "user",
+        text: userText,
+        urgent: isUrgent ? "Y" : "N",
+        sentiment: "neutral",
+      }),
     });
-
-const saveData = await saveRes.json();
-console.log("Respuesta de /api/chat:", saveData);
-    
 
     // 2️⃣ Obtener respuesta desde Gemini
     const prompt = `${systemMessage}\nUsuario: ${userText}\nRespuesta:`;
@@ -70,25 +71,29 @@ console.log("Respuesta de /api/chat:", saveData);
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt }),
     });
-
     const data = await res.json();
 
     // 3️⃣ Mostrar respuesta en el chat
-    if (isUrgent) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          author: "bot",
-          text: `${data.response}\n\n⚠️ Te recomiendo encarecidamente que hables con un profesional lo antes posible.`,
-          urgent: true,
-        },
-      ]);
-    } else {
-      setMessages((prev) => [
-        ...prev,
-        { author: "bot", text: data.response },
-      ]);
-    }
+    const botResponse = isUrgent
+      ? `${data.response}\n\n⚠️ Te recomiendo encarecidamente que hables con un profesional lo antes posible.`
+      : data.response;
+
+    setMessages((prev) => [...prev, { author: "bot", text: botResponse, urgent: isUrgent }]);
+
+    // 4️⃣ Guardar también la respuesta del bot en Oracle
+    await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        session_id: "chat-001",
+        user_id: "bot-01",
+        role: "bot",
+        text: botResponse,
+        urgent: isUrgent ? "Y" : "N",
+        sentiment: "neutral",
+      }),
+    });
+
   } catch (error) {
     console.error(error);
     setMessages((prev) => [
@@ -100,6 +105,7 @@ console.log("Respuesta de /api/chat:", saveData);
   }
 };
 
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
@@ -108,36 +114,47 @@ console.log("Respuesta de /api/chat:", saveData);
     <div className="chat">
       <PageBreadcrumb pageTitle="Chat" />
       <div>
-        <div className="rounded p-4 overflow-y-auto mb-4 text-left area-chat max-h-[70vh]">
-         {messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`mb-2 p-3 rounded-lg max-w-[75%] whitespace-pre-wrap ${
-                msg.author === "user"
-                  ? "bg-blue-100 text-right self-end ml-auto"  // <-- Aquí text-right
-                  : "bg-gray-200 text-left mr-auto"
-              }`}
-            >
-              <div className="text-xs font-semibold mb-1">
-                {msg.author === "user" ? "Tú" : "Yungen"}
-              </div>
-              {msg.text}
-               {/* Si el mensaje es urgente y del bot, mostramos botón */}
-              {msg.urgent && msg.author === "bot" && (
-                <div className="mt-3">
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => (window.location.href = "/doctores")}
-                  >
-                    Reservar cita médica 🩺
-                  </Button>
+          <div className="grid grid-cols-12 gap-4">
+          
+              <div className="col-span-12 lg:col-span-9">
+                <div className="rounded p-4 overflow-y-auto mb-4 text-left area-chat max-h-[70vh]">
+                {messages.map((msg, i) => (
+                    <div
+                      key={i}
+                      className={`mb-2 p-3 rounded-lg max-w-[75%] whitespace-pre-wrap ${
+                        msg.author === "user"
+                          ? "bg-blue-100 text-right self-end ml-auto"  // <-- Aquí text-right
+                          : "bg-gray-200 text-left mr-auto"
+                      }`}
+                    >
+                      <div className="text-xs font-semibold mb-1">
+                        {msg.author === "user" ? "Tú" : "Yungen"}
+                      </div>
+                      {msg.text}
+                      {/* Si el mensaje es urgente y del bot, mostramos botón */}
+                      {msg.urgent && msg.author === "bot" && (
+                        <div className="mt-3">
+                          <Button
+                            variant="primary"
+                            size="sm"
+                            onClick={() => (window.location.href = "/doctores")}
+                          >
+                            Reservar cita médica 🩺
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <div ref={bottomRef} />
                 </div>
-              )}
-            </div>
-          ))}
-          <div ref={bottomRef} />
-        </div>
+              </div>
+
+         
+              <div className="col-span-12 lg:col-span-3">
+                 <ChatAside/>
+              </div>
+          </div>
+
 
         <div className="chat-button rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
           <div className="mx-auto w-full max-w-[630px] text-center">
@@ -168,6 +185,7 @@ console.log("Respuesta de /api/chat:", saveData);
           </div>
         </div>
       </div>
+      
     </div>
   );
 }

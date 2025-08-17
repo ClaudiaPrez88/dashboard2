@@ -24,7 +24,7 @@ const CustomCard2: React.FC<CardProps> = ({ backgroundImage,color,text,icon, url
         background: `#${color}`,
       }}
     >
-      <div className="grid grid-cols-2 gap-4 custom-card2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 custom-card2">
         <div className="flex flex-col justify-between">
           {/* Ícono arriba */}
           {icon &&  <span className="text-4xl text-gray-700">{icon}</span>}
