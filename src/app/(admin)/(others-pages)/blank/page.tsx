@@ -3,6 +3,8 @@ import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import React, { useState, useRef, useEffect } from "react";
 import Button from "@/components/ui/button/Button";
 import ChatAside from "@/layout/ChatAside";
+import { useModal } from "@/hooks/useModal";
+import { Modal } from "@/components/ui/modal";
 
 type Message = {
   author: "user" | "bot";
@@ -104,10 +106,11 @@ const handleSend = async () => {
     setLoading(false);
   }
 };
-const [showAside, setShowAside] = useState(true);
-const toggleAside = () => {
-    setShowAside((prev) => !prev);
-  };
+const {
+  isOpen: isAsideOpen,
+  openModal: openAside,
+  closeModal: closeAside,
+} = useModal();
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -115,34 +118,23 @@ const toggleAside = () => {
 
   return (
     <div className="chat">
-      <PageBreadcrumb pageTitle="Chat - Hablemos" />
+      <PageBreadcrumb pageTitle="Chat" />
       <div>
           <div className="grid grid-cols-12 gap-4">
-                {/* Aside en desktop */}
-                {showAside && (
-                  <div className="lg:block col-span-3">
-                    <ChatAside onClose={() => setShowAside(false)} />
-                  </div>
-                )}
-
-                {/* Botón para abrir aside en mobile */}
-                {!showAside && (
-                  <div className="lg:hidden col-span-12">
+               {/* boton modal */}
+                <div className="lg:hidden col-span-12">
                   <div className="my-6 flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900">
                     <h4 className="pl-2 text-lg font-medium text-gray-800 dark:text-white/90">Historial</h4>
-                    <button 
-                     onClick={toggleAside} 
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-gray-300 text-gray-700 dark:border-gray-700 dark:text-gray-400">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M4 6L20 6M4 18L20 18M4 12L20 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                    <button
+                      onClick={openAside}
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-gray-300 text-gray-700 dark:border-gray-700 dark:text-gray-400"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path d="M4 6L20 6M4 18L20 18M4 12L20 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </button>
                   </div>
                 </div>
-                )}
-
-                
-              {/* Chat */}
               <div className="col-span-12 lg:col-span-9">
                 <div className="rounded p-4 overflow-y-auto mb-4 text-left area-chat max-h-[70vh]">
                 {messages.map((msg, i) => (
@@ -176,10 +168,24 @@ const toggleAside = () => {
                 </div>
               </div>
 
-         <div className="hidden lg:flex col-span-3">
-            <ChatAside />
-          </div>
-             
+         
+               {/* Aside en desktop */}
+                <div className="lg:block col-span-3">
+                  <ChatAside />
+                </div>
+
+               
+                 {/* termina boton modal */}
+                 <Modal
+                  isOpen={isAsideOpen}
+                  onClose={closeAside}
+                  isFullscreen={true} // para que en móvil sea toda la pantalla
+                  showCloseButton={true}
+                >
+                  <div className="fixed top-0 left-0 flex flex-col w-full h-screen bg-white dark:bg-gray-900">
+                    <ChatAside onClose={closeAside} />
+                  </div>
+                </Modal>
           </div>
 
 

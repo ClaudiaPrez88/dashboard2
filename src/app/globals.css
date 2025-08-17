@@ -746,6 +746,7 @@ span.flatpickr-weekday,
   position: sticky;
   bottom: 0px;
   width: 100%;
+  z-index: 300;
 }
 .area-chat{
    height: calc(100vh - 300px);
@@ -761,4 +762,10 @@ span.flatpickr-weekday,
 }
 .icon-list{
   @apply flex items-center justify-center w-10 h-10 bg-brand-100 rounded-xl dark:bg-gray-800 mr-2
+}
+/* Para pantallas >= 1024px (lg) */
+@media (max-width: 1024px) {
+  .chat-button {
+    z-index: 0;
+  }
 }
