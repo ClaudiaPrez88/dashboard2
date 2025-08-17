@@ -10,14 +10,15 @@ import { Dropdown } from "@/components/ui/dropdown/Dropdown";
 type ChatItem = {
   id: number;
   text: string;
-   session_id?: string;
+  session_id?: string;
 };
 
 type ChatAsideProps = {
-  onSelectChat: (session_id: string) => void;
+onSelectChat: (id: string) => Promise<void>;
+onNewChat: () => void;
 };
 
-const ChatAside: React.FC<ChatAsideProps> = ({ onSelectChat }) => {
+const ChatAside: React.FC<ChatAsideProps> = ({ onSelectChat,onNewChat }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { items, loading } = useSelector((state: RootState) => state.chat) as {
     items: ChatItem[];
@@ -41,7 +42,9 @@ const ChatAside: React.FC<ChatAsideProps> = ({ onSelectChat }) => {
   return (
     <aside className="lg:relative lg:top-auto lg:right-auto lg:h-full lg:w-[280px] lg:flex-col lg:border-l lg:border-gray-200 lg:bg-white lg:p-6 dark:lg:border-gray-800 dark:lg:bg-gray-900">
       {/* Botón para crear un nuevo chat */}
-      <button className="mb-5 flex w-full items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-3 text-sm font-medium text-white transition hover:bg-brand-600">
+      <button 
+       onClick={onNewChat}
+       className="mb-5 flex w-full items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-3 text-sm font-medium text-white transition hover:bg-brand-600">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width={20}
@@ -61,7 +64,7 @@ const ChatAside: React.FC<ChatAsideProps> = ({ onSelectChat }) => {
       </button>
 
       {/* Lista de chats */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3 text-sm">
+      <div className="flex-1 custom-scrollbar space-y-3 text-sm">
         {loading ? (
           <p>Cargando...</p>
         ) : (
@@ -87,10 +90,11 @@ const ChatAside: React.FC<ChatAsideProps> = ({ onSelectChat }) => {
                     className="w-40 p-2"
                   >
                     <DropdownItem
-                      onItemClick={() => {
-                        onSelectChat(item.session_id); // 👈 al hacer click en "Ver"
+                      onItemClick={async() => {
+                       await onSelectChat(item.id.toString());
                         closeDropdown();
                       }}
+
                       className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
                     >
                       Ver

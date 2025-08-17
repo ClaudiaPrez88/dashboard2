@@ -4,7 +4,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { session_id, user_id, role, text, urgent, sentiment } = body;
+    const { id,session_id, user_id, role, text, urgent, sentiment } = body;
 
     const response = await fetch(
       "https://g0818aead2485ee-instanciaagosto.adb.us-phoenix-1.oraclecloudapps.com/ords/wks_agosto/chat/messages",
@@ -16,6 +16,7 @@ export async function POST(req: Request) {
           // "Authorization": "Basic TU_BASE64",
         },
         body: JSON.stringify({
+          id,
           session_id,
           user_id,
           role,

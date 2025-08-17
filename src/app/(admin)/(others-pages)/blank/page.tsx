@@ -11,23 +11,26 @@ type Message = {
   text: string;
   urgent?:boolean;
 };
-
-export default function BlankPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      author: "bot",
-text: `Hola Manuel, soy Yūgen 🌿  
+  const defaultBotMessage: Message = {
+  author: "bot",
+  text: `Hola Manuel, soy Yūgen 🌿  
 Bienvenido a tu espacio de calma y reflexión.  
 Aquí puedes expresar lo que sientes, liberar el peso de las emociones difíciles 🌧️ y celebrar los momentos que iluminan tu día ☀️.  
 
 ¿Cómo te sientes hoy?  
 ¿Qué puedo hacer por ti en este momento?`,
-    },
-  ]);
+};
+export default function BlankPage() {
+  const [messages, setMessages] = useState<Message[]>([defaultBotMessage]);
+
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
-
+ // Handler para “Nuevo chat”
+  const handleNewChat = () => {
+    setMessages([defaultBotMessage]); // reinicia solo la UI con el mensaje de bienvenida
+    setInput(""); // limpia input si quieres
+  };
   const systemMessage = `
 Eres un asistente amable, empático y experto en ansiedad. Siempre respondes en español. Tus respuestas son claras, breves y fáciles de entender. Primero, valida lo que dice el usuario y acompaña con palabras de apoyo. No des demasiada información o ejercicios en la primera respuesta; espera a que el usuario muestre interés para ir avanzando poco a poco. Varía tu lenguaje para no repetir frases exactas ni lugares comunes como "Estoy aquí para escucharte". Usa sinónimos o formas diferentes de expresar apoyo.
 
@@ -112,9 +115,9 @@ const {
   closeModal: closeAside,
 } = useModal();
 
-const handleSelectChat = async (session_id: string) => {
+const handleSelectChat = async (id: string) => {
   try {
-    const res = await fetch(`/api/chat?session_id=${session_id}`);
+    const res = await fetch(`/api/chat?session_id=${id}`);
     const data = await res.json();
 
     // Filtramos solo los mensajes del día de hoy
@@ -125,7 +128,8 @@ const handleSelectChat = async (session_id: string) => {
     });
 
     // Mapeamos al formato de Message
-    setMessages(todayMessages.map((msg: any) => ({
+    setMessages
+    (data.items.map((msg: any) => ({
       author: msg.role === "user" ? "user" : "bot",
       text: msg.text,
       urgent: msg.urgent === "Y"
@@ -148,7 +152,7 @@ const handleSelectChat = async (session_id: string) => {
           <div className="grid grid-cols-12 gap-4">
                {/* boton modal */}
                 <div className="lg:hidden col-span-12">
-                  <div className="my-6 flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900">
+                  <div className="my-0 flex items-center justify-between rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900">
                     <h4 className="pl-2 text-lg font-medium text-gray-800 dark:text-white/90">Historial</h4>
                     <button
                       onClick={openAside}
@@ -196,7 +200,7 @@ const handleSelectChat = async (session_id: string) => {
          
                {/* Aside en desktop */}
                 <div className="hidden lg:block col-span-3">
-                  <ChatAside onSelectChat={handleSelectChat} />
+                  <ChatAside onSelectChat={handleSelectChat} onNewChat={handleNewChat}  />
                 </div>
 
                
@@ -208,7 +212,7 @@ const handleSelectChat = async (session_id: string) => {
                   showCloseButton={true}
                 >
                   <div className="fixed top-0 left-0 flex flex-col w-full h-screen bg-white dark:bg-gray-900 p-4">
-                    <ChatAside onSelectChat={handleSelectChat}/>
+                    <ChatAside onSelectChat={handleSelectChat} onNewChat={handleNewChat} />
                   </div>
                 </Modal>
           </div>

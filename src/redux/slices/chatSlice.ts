@@ -58,9 +58,9 @@ export const fetchMessages = createAsyncThunk(
 // Nuevo thunk para traer los mensajes del user y bot
 export const fetchMessagesByChat = createAsyncThunk(
   "chat/fetchMessagesByChat",
-  async (session_id: string, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
-      const res = await fetch(`/api/chat?session_id=${session_id}`);
+      const res = await fetch(`/api/chat?d=${id}`);
       if (!res.ok) throw new Error("Error al traer mensajes del chat");
       const data = await res.json();
       return data.items; // asumimos que vienen todos los mensajes del chat
