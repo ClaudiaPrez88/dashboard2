@@ -50,11 +50,13 @@ export default function BreathingExercise() {
   };
 
   return (
+   <>
     <motion.div
       initial={{ background: "linear-gradient(to bottom, #F3CFDB, #C2E3EC)" }}
       animate={controls}
       className="flex flex-col items-center justify-center min-h-[375px] md:h-full lg:h-full w-full rounded-2xl p-4"
     >
+      <p className="pb-6">Tómate una pausa para respirar</p>
       <motion.div
         animate={{ scale: phase === "Inhala" && running ? 1.3 : 0.8 }}
         transition={{ duration: 6, ease: "easeInOut" }}
@@ -63,10 +65,11 @@ export default function BreathingExercise() {
       <p className="mt-6 text-2xl font-semibold text-gray-700">{phase}</p>
       <button
         onClick={toggleRunning}
-        className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        className="mt-6 px-4 py-2 bg-brand-500 text-white rounded hover:bg-brand-700 transition"
       >
         {running ? "Detener" : "Iniciar"}
       </button>
     </motion.div>
+   </>
   );
 }
