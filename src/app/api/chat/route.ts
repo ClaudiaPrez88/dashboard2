@@ -57,3 +57,36 @@ export async function GET() {
     return NextResponse.json({ error: "Error al traer mensajes" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const body = await req.json();
+    const { id } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: "Falta id" }, { status: 400 });
+    }
+
+    const response = await fetch(
+      "https://g0818aead2485ee-instanciaagosto.adb.us-phoenix-1.oraclecloudapps.com/ords/wks_agosto/chat/messages",
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          // "Authorization": "Basic TU_BASE64" // si ORDS requiere auth
+        },
+        body: JSON.stringify({ id }),
+      }
+    );
+
+    if (!response.ok) {
+      const text = await response.text();
+      return NextResponse.json({ error: text || "Error al eliminar mensaje" }, { status: response.status });
+    }
+
+    return NextResponse.json({ ok: true, id });
+  } catch (err: any) {
+    console.error("Error al borrar mensaje en ORDS:", err);
+    return NextResponse.json({ error: "Error al borrar mensaje" }, { status: 500 });
+  }
+}

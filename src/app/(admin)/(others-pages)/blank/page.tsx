@@ -189,7 +189,7 @@ const {
           </div>
 
 
-        <div className="chat-button rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-white/[0.03] xl:px-10 xl:py-12">
+        <div className="chat-button rounded-2xl border border-gray-200 bg-white px-5 py-7 dark:border-gray-800 dark:bg-gray-900 xl:px-10 xl:py-12">
           <div className="mx-auto w-full max-w-[630px] text-center">
             <div className="flex flex-col sm:flex-row gap-3">
               <input

@@ -12,24 +12,48 @@ type ChatState = {
   error: string | null;
 };
 
-// Async thunk para traer mensajes desde la API
-export const fetchMessages = createAsyncThunk("chat/fetchMessages", async () => {
-  const res = await fetch("/api/chat");
-  if (!res.ok) throw new Error("Error al traer mensajes");
-  const data = await res.json();
-  
-    // Ordenamos los mensajes por created_at (más recientes primero)
-   const userMessages = data.items
-    .filter((msg: any) => msg.role === "user")
-    .sort((a: any, b: any) =>
-    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    );
-  // Ajusta según la estructura de tu API
-  return userMessages.map((msg: any) => ({
-    id: msg.id,
-    text: msg.text,
-  }));
-});
+// ✅ Thunk para eliminar un mensaje
+export const deleteMessage = createAsyncThunk(
+  "chat/deleteMessage",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const res = await fetch("/api/chat", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Error al eliminar mensaje");
+      }
+      return id;
+    } catch (err: any) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+// Async thunk para traer mensajes
+export const fetchMessages = createAsyncThunk(
+  "chat/fetchMessages",
+  async () => {
+    const res = await fetch("/api/chat");
+    if (!res.ok) throw new Error("Error al traer mensajes");
+    const data = await res.json();
+
+    const userMessages = data.items
+      .filter((msg: any) => msg.role === "user")
+      .sort(
+        (a: any, b: any) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+
+    return userMessages.map((msg: any) => ({
+      id: msg.id,
+      text: msg.text,
+    }));
+  }
+);
 
 const initialState: ChatState = {
   items: [],
@@ -43,17 +67,35 @@ const chatSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Traer mensajes
       .addCase(fetchMessages.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchMessages.fulfilled, (state, action: PayloadAction<ChatItem[]>) => {
-        state.items = action.payload;
-        state.loading = false;
-      })
+      .addCase(
+        fetchMessages.fulfilled,
+        (state, action: PayloadAction<ChatItem[]>) => {
+          state.items = action.payload;
+          state.loading = false;
+        }
+      )
       .addCase(fetchMessages.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Error desconocido";
+      })
+
+      // Eliminar mensaje
+      .addCase(deleteMessage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteMessage.fulfilled, (state, action: PayloadAction<number>) => {
+        state.items = state.items.filter((msg) => msg.id !== action.payload);
+        state.loading = false;
+      })
+      .addCase(deleteMessage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string || "Error al eliminar mensaje";
       });
   },
 });

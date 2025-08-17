@@ -1,8 +1,12 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store";
 import { fetchMessages } from "../redux/slices/chatSlice";
+import { MoreDotIcon } from "@/icons";
+import { DropdownItem } from "@/components/ui/dropdown/DropdownItem";
+import { Dropdown } from "@/components/ui/dropdown/Dropdown";
+import { deleteMessage } from "../redux/slices/chatSlice";
 
 type ChatItem = {
   id: number;
@@ -20,6 +24,19 @@ const ChatAside: React.FC = () => {
   useEffect(() => {
   dispatch(fetchMessages());
 }, [dispatch]);
+
+ const [isOpen, setIsOpen] = useState(false);
+
+ //Guardo el id del dropdown abierto
+  const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
+
+  function toggleDropdown(id: number) {
+    setOpenDropdownId(openDropdownId === id ? null : id);
+  }
+
+  function closeDropdown() {
+    setOpenDropdownId(null);
+  }
 
   return (
     <aside className="lg:relative lg:top-auto lg:right-auto lg:h-full lg:w-[280px] lg:flex-col lg:border-l lg:border-gray-200 lg:bg-white lg:p-6 dark:lg:border-gray-800 dark:lg:bg-gray-900">
@@ -48,8 +65,8 @@ const ChatAside: React.FC = () => {
         {loading ? (
           <p>Cargando...</p>
         ) : (
-          <ul className="space-y-1">
-           {items.map((item) => (
+           <ul className="space-y-1">
+            {items.map((item) => (
               <li
                 key={item.id}
                 className="group flex cursor-pointer items-center justify-between rounded-full px-3 py-1.5 hover:bg-gray-50 dark:hover:bg-gray-950"
@@ -57,6 +74,35 @@ const ChatAside: React.FC = () => {
                 <span className="truncate text-gray-700 dark:text-gray-400">
                   {item.text}
                 </span>
+                <div className="relative inline-block">
+                  <button
+                    onClick={() => toggleDropdown(item.id)}
+                    className="dropdown-toggle"
+                  >
+                    <MoreDotIcon className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" />
+                  </button>
+                  <Dropdown
+                    isOpen={openDropdownId === item.id}
+                    onClose={closeDropdown}
+                    className="w-40 p-2"
+                  >
+                    <DropdownItem
+                      onItemClick={closeDropdown}
+                      className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                    >
+                      Ver
+                    </DropdownItem>
+                    <DropdownItem
+                      onItemClick={() => {
+                        dispatch(deleteMessage(item.id)); // elimina por id
+                        closeDropdown();
+                      }}
+                      className="flex w-full font-normal text-left text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                    >
+                      Borrar
+                    </DropdownItem>
+                  </Dropdown>
+                </div>
               </li>
             ))}
           </ul>
