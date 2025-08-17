@@ -21,8 +21,8 @@ export default function BreathingExercise() {
       controls.start({
         background:
           phases[index] === "Inhala"
-            ? "linear-gradient(to bottom, #a0d8f1, #70c1f1)"
-            : "linear-gradient(to bottom, #4a90e2, #357ABD)",
+            ? "linear-gradient(to bottom, #F3CFDB, #C2E3EC)"
+            : "linear-gradient(to bottom, #C2E3EC, #F3CFDB)",
         transition: { duration: 6, ease: "easeInOut" },
       });
     }, 6000);
@@ -30,7 +30,7 @@ export default function BreathingExercise() {
 
   useEffect(() => {
     controls.start({
-      background: "linear-gradient(to bottom, #a0d8f1, #70c1f1)",
+      background: "linear-gradient(to bottom,#F3CFDB, #C2E3EC)",
     });
 
     if (running) startAnimation();
@@ -51,14 +51,14 @@ export default function BreathingExercise() {
 
   return (
     <motion.div
-      initial={{ background: "linear-gradient(to bottom, #a0d8f1, #70c1f1)" }}
+      initial={{ background: "linear-gradient(to bottom, #F3CFDB, #C2E3EC)" }}
       animate={controls}
-      className="flex flex-col items-center justify-center h-full w-full rounded-2xl p-4"
+      className="flex flex-col items-center justify-center min-h-[375px] md:h-full lg:h-full w-full rounded-2xl p-4"
     >
       <motion.div
         animate={{ scale: phase === "Inhala" && running ? 1.3 : 0.8 }}
         transition={{ duration: 6, ease: "easeInOut" }}
-        className="w-40 h-40 rounded-full bg-blue-500 shadow-lg"
+        className="w-40 h-40 rounded-full bg-brand-500 shadow-lg"
       />
       <p className="mt-6 text-2xl font-semibold text-gray-700">{phase}</p>
       <button
