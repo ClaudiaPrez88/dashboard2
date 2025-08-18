@@ -18,7 +18,7 @@ Este proyecto fue desarrollado en la **Hackathon Desafío Latam + Oracle 2025**,
 
 ## 📸 Vista previa  
 (Agrega aquí una imagen representativa de la app)  
-![Preview](URL_DE_LA_IMAGEN_AQUI)  
+![Preview](images/demo.png)  
 
 👉 Puedes probar el **frontend de la aplicación aquí**:  
 🔗 [https://dashboard2-sooty.vercel.app/](https://dashboard2-sooty.vercel.app/)  
