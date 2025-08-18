@@ -3,12 +3,13 @@ import ComponentCard from "@/components/common/ComponentCard";
 import Image from "next/image";
 import { Star } from "lucide-react";
 
+
 interface Ejercicio {
   id: number;
   titulo: string;
-  imagen: string;
+  imagen: string | null;
   contenido: string;
-  duracion: string; 
+  duracion: number; 
   rating: number;
   descripcion:string;
 }

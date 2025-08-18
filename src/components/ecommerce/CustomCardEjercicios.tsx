@@ -1,13 +1,41 @@
 "use client";
 import Image from "next/image";
-import { ejercicios } from "@/data/ejercicios";
 import Link from "next/link";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchEjercicios } from "@/redux/slices/ejerciciosSlides";
+import { RootState, AppDispatch } from "@/redux/store";
+import { useEffect } from "react";
 
 interface CardProps {
   url:string;
 }
 
 const CustomCardEjercicios: React.FC<CardProps> = ({ url }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  // 👈 Selecciona los datos del estado de Redux
+  const { lista: ejercicios, loading, error } = useSelector((state: RootState) => state.ejercicios);
+
+  // 👈 Dispara la petición a la API cuando el componente se monta
+  useEffect(() => {
+    dispatch(fetchEjercicios());
+  }, [dispatch]);
+  // 👈 Renderiza un mensaje mientras carga la información
+  if (loading) {
+    return (
+      <div className="text-center py-8">
+        <p>Cargando ejercicios...</p>
+      </div>
+    );
+  }
+
+  // 👈 Renderiza un mensaje si ocurre un error
+  if (error) {
+    return (
+      <div className="text-center py-8 text-red-500">
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
   return (
     <>
     <Link href={url}>
@@ -18,8 +46,8 @@ const CustomCardEjercicios: React.FC<CardProps> = ({ url }) => {
                             <Image
                               src="/images/relax.svg"
                               alt="Relax Icon"
-                              width={40}  // Aquí definimos un tamaño base
-                            height={40} // Este también es un tamaño base
+                              width={40}
+                              height={40}
                             className="object-contain sm:w-20 sm:h-12 md:w-16 md:h-16 lg:w-10 lg:h-10"
                             />
                           </div>
@@ -35,12 +63,14 @@ const CustomCardEjercicios: React.FC<CardProps> = ({ url }) => {
         </div>
         <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-600 sm:p-6 space-y-4 -mt-6 z-10 relative">
                     
+            {/* 👈 Ahora se mapea sobre el array 'ejercicios' que viene del estado de Redux */}
             {ejercicios.map((ejercicio)=>(
                       <div key={ejercicio.id} className="grid grid-cols-12 sm:grid-cols-6 md:grid-cols-12 lg:grid-cols-12 gap-4">
                         <div className="col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-1 justify-center items-start">
                           <Image
-                            src={ejercicio.imagen}
-                            alt="Relax Icon"
+                            // 👈 Usa 'ejercicio.imagen' para evitar errores de tipo
+                            src={ejercicio.imagen!}
+                            alt="Imagen del ejercicio"
                             width={80}
                             height={80}
                             className="rounded-full object-cover"
