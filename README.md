@@ -16,8 +16,7 @@ Este proyecto fue desarrollado en la **Hackathon Desafío Latam + Oracle 2025**,
 
 ---
 
-## 📸 Vista previa  
-(Agrega aquí una imagen representativa de la app)  
+## 📸 Vista previa    
 ![Preview](public/images/demo.png)  
 
 👉 Puedes probar el **frontend de la aplicación aquí**:  
