@@ -42,11 +42,11 @@ const EmergencyHelp = () => {
       </ul>
 
       {/* Ejercicios */}
-      <h3 className="mb-2 text-base font-medium text-gray-800 dark:text-white/90">Ejercicios S.O.S. para tu ansiedad</h3>
+      {/* <h3 className="mb-2 text-base font-medium text-gray-800 dark:text-white/90">Ejercicios S.O.S. para tu ansiedad</h3>
       <ul className="space-y-2 text-gray-800 dark:text-white/90">
-        <li className="rounded-md border p-2 list-no"><span>Respiración en caso de crisis</span><ArrowRight/></li>
+        <li className="rounded-md border p-2 list-no"><span>Visualización Guiada</span><ArrowRight/></li>
         <li className="rounded-md border p-2 list-no"><span>Conexión al presente</span><ArrowRight/></li>
-      </ul>
+      </ul> */}
       </div>
     </div>
   );
