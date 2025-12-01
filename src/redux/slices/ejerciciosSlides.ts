@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { supabase } from '../../supabaseClient' 
 
 const PLACEHOLDER_IMAGE = "/images/placeholder.png"; // ruta local a imagen por defecto
 
@@ -7,8 +8,13 @@ const PLACEHOLDER_IMAGE = "/images/placeholder.png"; // ruta local a imagen por 
 export const fetchEjercicios = createAsyncThunk(
   'ejercicios/fetchEjercicios',
   async () => {
-    const response = await axios.get('https://g0818aead2485ee-instanciaagosto.adb.us-phoenix-1.oraclecloudapps.com/ords/wks_agosto/ejercicios/ejercicios')
-    return response.data.items // 👈 Solo devolvemos el array
+    const { data, error } = await supabase
+      .from('ejercicios') // 👈 nombre de tu tabla en Supabase
+      .select('*')
+
+    if (error) throw error
+
+    return data
   }
 )
 

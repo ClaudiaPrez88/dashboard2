@@ -1,14 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { supabase } from '@/supabaseClient';
 
 const PLACEHOLDER_IMAGE = "/images/placeholder.png"; // ruta local a imagen por defecto
 
 // Fetch de doctores (usuarios) desde API pública
 export const fetchDoctores = createAsyncThunk(
   'doctores/fetchDoctores',
-  async () => {
-    const response = await axios.get('https://g0818aead2485ee-instanciaagosto.adb.us-phoenix-1.oraclecloudapps.com/ords/wks_agosto/api/doctores')
-    return response.data.items // 👈 Solo devolvemos el array
+   async () => {
+    const { data, error } = await supabase
+      .from('doctores') // 👈 nombre de tu tabla en Supabase
+      .select('*')
+
+    if (error) throw error
+
+    return data
   }
 )
 
